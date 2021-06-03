@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Section from "./components/Section";
 import "./App.css";
+import NavBar from "./components/NavBar";
+import HeroSection from "./components/HeroSection";
 
 const App = () => {
   const genreIncrement = 4;
@@ -27,7 +29,15 @@ const App = () => {
 
   return (
     <>
-      {genres && genres.map((genre) => <Section genre={genre.value} />)}
+      <NavBar />
+      <HeroSection />
+      {genres && (
+        <div className="container">
+          {genres.map((genre) => (
+            <Section genre={genre.value} />
+          ))}
+        </div>
+      )}
       <div className="page-end" onMouseEnter={handleMouseEnter} />
     </>
   );
