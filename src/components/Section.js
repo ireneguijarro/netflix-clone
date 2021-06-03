@@ -1,21 +1,27 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 
 const Section = ({ genre }) => {
   const [movies, setMovies] = useState([]);
+  const [pageState, setPageState] = useState("");
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async (genre, pageState = null) => {
     const response = await fetch("/.netlify/functions/getMovies", {
       method: "POST",
-      body: JSON.stringify({ genre: genre }),
+      body: JSON.stringify({ genre: genre, pageState: pageState }),
     });
     const responseBody = await response.json();
     setMovies(responseBody.data.movies_by_genre.values);
-  }, [genre]);
+    setPageState(responseBody.data.movies_by_genre.pageState);
+  };
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData(genre);
+  }, [genre]);
+
+  const handleMoreMoviesClick = () => {
+    fetchData(genre, pageState);
+  };
 
   return (
     <>
@@ -25,6 +31,7 @@ const Section = ({ genre }) => {
           {movies.map((movie, i) => (
             <Card key={i} movie={movie} />
           ))}
+          <div className="more-button" onClick={handleMoreMoviesClick} />
         </div>
       )}
     </>
