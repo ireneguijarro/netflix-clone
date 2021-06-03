@@ -3,20 +3,33 @@ import Section from "./components/Section";
 import "./App.css";
 
 const App = () => {
-  const [genres, setGenres] = useState(null);
+  const genreIncrement = 4;
 
-  const fetchData = async () => {
-    const response = await fetch("/.netlify/functions/getGenres");
+  const [genres, setGenres] = useState(null);
+  const [limit, setLimit] = useState(genreIncrement);
+
+  const fetchData = async (limit) => {
+    const response = await fetch("/.netlify/functions/getGenres", {
+      method: "POST",
+      body: limit,
+    });
     const responseBody = await response.json();
     setGenres(responseBody.data.reference_list.values);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(limit);
+  }, [limit]);
+
+  const handleMouseEnter = () => {
+    setLimit((limit) => limit + genreIncrement);
+  };
 
   return (
-    <>{genres && genres.map((genre) => <Section genre={genre.value} />)}</>
+    <>
+      {genres && genres.map((genre) => <Section genre={genre.value} />)}
+      <div className="page-end" onMouseEnter={handleMouseEnter} />
+    </>
   );
 };
 
