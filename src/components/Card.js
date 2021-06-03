@@ -18,12 +18,14 @@ const Card = ({ movie }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <h4>{title}</h4>
-      <h4>{duration}</h4>
       <video className="video" controls autoPlay={isShown} loop={isShown}>
         <source src={thumbnail} type="video/mp4" />
       </video>
-      {isShown && <div>{title}</div>}
+      {isShown && (
+        <div className="info-box">
+          <p>{title}</p>
+        </div>
+      )}
     </div>
   );
 };

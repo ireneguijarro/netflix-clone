@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 exports.handler = async function (event) {
   const body = JSON.parse(event.body);
   const genre = body.genre;
-  const pageState = body.pageState === "" ? null : body.pageState;
+  const pageState = body.pageState;
   const url = process.env.ASTRA_GRAPHQL_ENDPOINT;
   const query = `
             query {
